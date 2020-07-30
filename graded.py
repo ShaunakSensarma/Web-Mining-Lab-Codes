@@ -1,108 +1,92 @@
 # -*- coding: utf-8 -*-
 """
-Created on Thu Jul 30 16:09:24 2020
+Created on Thu Jul 23 16:36:20 2020
 
 @author: Shaunak_Sensarma
 """
 
-
+import io 
+from nltk.corpus import stopwords 
+from nltk.tokenize import word_tokenize 
 import nltk
-from nltk.corpus import stopwords
-from nltk.stem import PorterStemmer
-from nltk.tokenize import sent_tokenize, word_tokenize
-from nltk.stem import WordNetLemmatizer 
-
-stop_words = set(stopwords.words('english'))
-
-ps = PorterStemmer()
-lemmatizer = WordNetLemmatizer() 
-
-example_words = ["python","pythoner","pythoning","pythoned","pythonly"]
-for w in example_words:
-    print(ps.stem(w), " - ", lemmatizer.lemmatize(w))
-
-
-new_text = "It is important to by very pythonly while you are pythoning with python. \\\
-            All pythoners have pythoned poorly at least once."
-words = word_tokenize(new_text)
-
-tagged = nltk.pos_tag(words) 
+stop_words = set(stopwords.words('english')) 
+stop_words.append('.',',','a','they','the','his','so','and','were','from','that','of','in','only','with','to')
+file1 = open("ML.txt") 
+line = file1.read()# Use this to read file content as a stream: 
+words = line.split() 
+for r in words: 
+    if not r in stop_words: 
+        appendFile = open('filteredML.txt','a') 
+        appendFile.write(" "+r) 
+        appendFile.close() 
+num_words = 0
+ 
+with open('filteredML.txt', 'r') as f:
+    for line in f:
+        words = line.split()
+        num_words += len(words)
+print("Number of words in First ML File:")
+print(num_words)
 
 
-for w in words:
-    print(w, " - ", ps.stem(w), " - ", lemmatizer.lemmatize(w))
+file1 = open("ML.txt") 
+line = file1.read()# Use this to read file content as a stream: 
+words = line.split() 
+for r in words: 
+    if r in stop_words: 
+        appendFile = open('filML.txt','a') 
+        appendFile.write(" "+r) 
+        appendFile.close()
+from collections import Counter
+def word_count(fname):
+        with open(fname) as f:
+                return Counter(f.read().split())
+print("Frequency of stop-words in the ML file :",word_count("filML.txt"))
 
-print(tagged) 
+file2 = open("AI.txt") 
+line = file2.read()# Use this to read file content as a stream: 
+words = line.split() 
+for r in words: 
+    if not r in stop_words: 
+        appendFile = open('filteredAI.txt','a') 
+        appendFile.write(" "+r) 
+        appendFile.close() 
+num_words = 0
+ 
+with open('filteredAI.txt', 'r') as f:
+    for line in f:
+        words = line.split()
+        num_words += len(words)
+print("Number of words in Second AI File:")
+print(num_words)
 
+file2 = open("AI.txt") 
+line = file2.read()# Use this to read file content as a stream: 
+words = line.split() 
+for r in words: 
+    if r in stop_words: 
+        appendFile = open('filAI.txt','a') 
+        appendFile.write(" "+r) 
+        appendFile.close()
+from collections import Counter
+def word_count(fname):
+        with open(fname) as f:
+                return Counter(f.read().split())
+print("Frequency of stop-words in the AI file :",word_count("filAI.txt"))
 
-
-
-from nltk.stem.snowball import SnowballStemmer
-
-stemmer = SnowballStemmer(language='english')
-
-tokens = ["python","pythoner","pythoning","pythoned","pythonly"]
-
-for token in tokens:
-    print(token + ' --> ' + stemmer.stem(token))
-
-
-
-
-import spacy
-sp = spacy.load('en_core_web_sm')
-sentence7 = sp(u'A letter has been written, asking him to be released')
-
-for word in sentence7:
-    print(word.text + '  ===>', word.lemma_)
-
-
-
-
-
-
-
-
-
-from nltk.corpus import wordnet 
-
-example_sent = "sample sentence showing off the stop words filtration"
-
-words = word_tokenize(example_sent)
-
-words = [w for w in words if not w in stop_words] 
-
-
-for w in words:
-    syns = wordnet.synsets(w) 
-    print(w, " - ", syns) 
-
-
-for w in words:
-    syn = wordnet.synsets(w)
-    print("\n\n",w,"\n")
-    print('Word and Type : ' + syn[0].name())
-    print('Synonym : ' + syn[0].lemmas()[0].name())
-    print('The meaning : ' + syn[0].definition())
-    print('Example : ' + str(syn[0].examples())) 
-
-
-synonyms = []
-
-for w in words:
-    for syn in wordnet.synsets(w):
-        for lm in syn.lemmas():
-            synonyms.append(lm.name())#adding into synonyms
-    print(w,"----",synonyms,"\n\n")
-    synonyms = []
-
-
-antonyms = []
-
-for w in words:
-    for syn in wordnet.synsets(w):
-        for lm in syn.lemmas():
-            if lm.antonyms():
-                antonyms.append(lm.antonyms()[0].name())#adding into antonyms
-    print(w,"----",antonyms,"\n\n")
-    antonyms = []
+file1 = open("filteredML.txt") 
+line = file1.read()# Use this to read file content as a stream: 
+words1 = line.split() 
+file2 = open("filteredAI.txt") 
+line = file2.read()# Use this to read file content as a stream: 
+words2 = line.split() 
+for r in words1: 
+    if r in words2: 
+        appendFile = open('finaltext.txt','a') 
+        appendFile.write(" "+r) 
+        appendFile.close()
+print()
+print("Common terms in both text are.")
+fopen3 = open("finaltext.txt", 'r')
+for line in fopen3:
+    print(line)
